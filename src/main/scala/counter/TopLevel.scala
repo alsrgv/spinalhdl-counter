@@ -4,16 +4,22 @@ import spinal.core._
 import spinal.lib.Counter
 
 class TopLevel(ledBits: BitCount, timeoutBits: BitCount) extends Component {
-  val btn = in Bool
-  val leds = out UInt ledBits
+  val io = new Bundle {
+    val btn = in Bool
+    val leds = out UInt ledBits
+  }
+  // Set names that match expected IOs
+  io.btn.setName("btn")
+  io.leds.setName("leds")
+
   val stabilizer = new Stabilizer()
   val debouncer = new Debouncer(timeoutBits)
   val cnt = Counter(ledBits)
 
-  stabilizer.io.signal := btn
+  stabilizer.io.signal := io.btn
   debouncer.io.signal := stabilizer.io.stable
   cnt.willIncrement := debouncer.io.justDown
-  leds := cnt.value
+  io.leds := cnt.value
 }
 
 object TopLevelVerilog {

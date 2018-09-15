@@ -14,7 +14,7 @@ object TopLevelSim {
       var idx = 0
       while (idx < 100) {
         //Drive the dut inputs with random values
-        dut.btn #= Random.nextBoolean()
+        dut.io.btn #= Random.nextBoolean()
         dut.clockDomain.waitRisingEdge()
         idx += 1
       }
