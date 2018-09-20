@@ -27,7 +27,8 @@ object TopLevelVerilog {
     val config = new SpinalConfig {
       override val netlistFileName = "counter.v"
     }
-    lazy val topLevel = new TopLevel(4 bits, 16 bits)
-    SpinalVerilog(config)(topLevel)
+    // It's really important to have TopLevel constructions inside the call.
+    // Otherwise, in case of error all sorts of weird things happen.
+    SpinalVerilog(config)(new TopLevel(4 bits, 16 bits))
   }
 }
