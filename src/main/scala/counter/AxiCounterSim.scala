@@ -5,9 +5,9 @@ import spinal.core.sim._
 
 import scala.util.Random
 
-object TopLevelSim {
+object AxiCounterSim {
   def main(args: Array[String]): Unit = {
-    SimConfig.withWave.doSim(new TopLevel(2 bits, 2 bits)){dut =>
+    SimConfig.withWave.doSim(new AxiCounter(2 bits, 2 bits)){ dut =>
       //Fork a process to generate the reset and the clock on the dut
       dut.clockDomain.forkStimulus(period = 10)
 
@@ -15,6 +15,19 @@ object TopLevelSim {
       while (idx < 100) {
         //Drive the dut inputs with random values
         dut.io.btn #= Random.nextBoolean()
+
+        //Simulate AXI
+        if (dut.io.axi.aw.valid.toBoolean) {
+          dut.io.axi.aw.ready #= true
+        } else {
+          dut.io.axi.aw.ready #= false
+        }
+        if (dut.io.axi.w.valid.toBoolean) {
+          dut.io.axi.w.ready #= true
+        } else {
+          dut.io.axi.w.ready #= false
+        }
+
         dut.clockDomain.waitRisingEdge()
         idx += 1
       }

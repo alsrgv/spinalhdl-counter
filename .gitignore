@@ -6,6 +6,7 @@ tmp
 *.jou
 *.bit
 .Xil
+.srcs
 .idea
 counter.v
 usage_statistics_webtalk.*
