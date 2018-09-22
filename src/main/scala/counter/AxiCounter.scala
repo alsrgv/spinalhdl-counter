@@ -31,7 +31,7 @@ object AxiCounterVerilog {
     val config = new SpinalConfig {
       override val netlistFileName = "counter.v"
       override val defaultConfigForClockDomains: ClockDomainConfig =
-        ClockDomainConfig(resetActiveLevel = LOW)
+        ClockDomainConfig(resetActiveLevel = LOW, resetKind = SYNC)
     }
     // It's really important to have TopLevel constructions inside the call.
     // Otherwise, in case of error all sorts of weird things happen.
